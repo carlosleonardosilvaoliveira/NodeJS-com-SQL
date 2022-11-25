@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+
+    <div id="App">
+        <form method="POST">
+            <input id="login" type="text">
+            <input id="senha" type="password">
+            <button type="submit" id="signin-btn-submit">Logar</button>
+        </form>
+    </div>
+
+<script type="application/javascript">
+
+    //RECEBE OS DADOS DO USUÁRIO
+    const form = {
+        login: document.querySelector('#login'),
+        senha: document.querySelector('#senha'),
+        submit: document.querySelector("#signin-btn-submit"),
+    };
+
+    let button = form.submit.addEventListener("click", (e) => {
+        e.preventDefault();
+        const API = "http://localhost:3030/api/auth/logar";
+
+        fetch(API, {
+            method: "POST",
+            headers: {
+                Accept: "application/json, text/plain, */*",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                login: form.login.value,
+                senha: form.senha.value,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                //console.log(data);
+
+                if(data.error) {
+                    alert("Usuário e/ou senhas incorretos");
+                } else {
+                    window.location.href = "http://localhost:3030/api/auth/logado";
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    });
+</script>
+
+
+</body>
+</html>
